@@ -1,5 +1,8 @@
 import { Table } from 'antd';
 import { AiOutlineDelete, AiOutlineEye } from 'react-icons/ai';
+import CustomModal from '../../components/shared/CustomModal';
+import ReviewForm from '../../components/ui/form/ReviewForm';
+import { useState } from 'react';
 
 // Sample data
 const data = [
@@ -60,42 +63,51 @@ const data = [
 ];
 
 // Column definitions
-const columns = [
-    {
-        title: 'Date',
-        dataIndex: 'date',
-        key: 'date',
-    },
-    {
-        title: "User's Name",
-        dataIndex: 'userName',
-        key: 'userName',
-    },
-    {
-        title: 'Email',
-        dataIndex: 'email',
-        key: 'email',
-    },
-    {
-        title: 'Actions',
-        key: 'action',
-        render: () => (
-            <div className="flex items-center gap-3">
-                <button className="text-primary">
-                    <AiOutlineEye size={24} />
-                </button>
-                <button className="text-red-500">
-                    <AiOutlineDelete size={24} />
-                </button>
-            </div>
-        ),
-    },
-];
 
 const Review = () => {
+    const [viewReview, setViewReview] = useState(false);
+    const columns = [
+        {
+            title: 'Date',
+            dataIndex: 'date',
+            key: 'date',
+        },
+        {
+            title: "User's Name",
+            dataIndex: 'userName',
+            key: 'userName',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+        },
+        {
+            title: 'Actions',
+            key: 'action',
+            render: () => (
+                <div className="flex items-center gap-3">
+                    <button onClick={() => setViewReview(true)} className="text-primary">
+                        <AiOutlineEye size={24} />
+                    </button>
+                    <button className="text-red-500">
+                        <AiOutlineDelete size={24} />
+                    </button>
+                </div>
+            ),
+        },
+    ];
     return (
         <div className="container mx-auto p-5">
             <Table columns={columns} dataSource={data} rowClassName="hover:bg-gray-100" />
+            <CustomModal
+                body={<ReviewForm />}
+                open={viewReview}
+                setOpen={setViewReview}
+                key={'review'}
+                title="Review"
+                width={532}
+            />
         </div>
     );
 };
