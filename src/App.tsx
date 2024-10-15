@@ -9,7 +9,11 @@ function App() {
                     token: {
                         colorPrimary: '#DAA520',
                     },
-                    components: {},
+                    components: {
+                        Input: {
+                            borderRadius: 40,
+                        },
+                    },
                 }}
             >
                 <MainLayout />

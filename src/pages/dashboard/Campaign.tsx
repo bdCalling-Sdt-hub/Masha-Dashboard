@@ -2,6 +2,9 @@ import { Table, Input, Select } from 'antd';
 
 import { SearchOutlined } from '@ant-design/icons';
 import { AiOutlineDelete, AiOutlineEye } from 'react-icons/ai';
+import { useState } from 'react';
+import CustomModal from '../../components/shared/CustomModal';
+import CampaignDetails from '../../components/ui/CampaignDetails';
 const { Option } = Select;
 // Sample data
 const data = [
@@ -88,56 +91,57 @@ const data = [
     },
 ];
 
-// Column definitions
-const columns = [
-    {
-        title: 'Campaign Name',
-        dataIndex: 'campaignName',
-        key: 'campaignName',
-    },
-    {
-        title: 'Brand Name',
-        dataIndex: 'brandName',
-        key: 'brandName',
-    },
-    {
-        title: 'Influencers',
-        dataIndex: 'influencers',
-        key: 'influencers',
-    },
-    {
-        title: 'Campaign Status',
-        dataIndex: 'campaignStatus',
-        key: 'campaignStatus',
-    },
-    {
-        title: 'Start Date/End Date',
-        key: 'dateRange',
-        render: (_text: any, record: any) => (
-            <span>
-                {record.startDate}/{record.endDate}
-            </span>
-        ),
-    },
-    {
-        title: 'Actions',
-        key: 'action',
-        render: () => (
-            <div className="flex items-center gap-3">
-                <button className="text-primary">
-                    <AiOutlineEye size={24} />
-                </button>
-                <button className="text-red-500">
-                    <AiOutlineDelete size={24} />
-                </button>
-            </div>
-        ),
-    },
-];
-
 const Campaign = () => {
+    const [campaignModal, setCampaignModal] = useState(false);
+
+    // Column definitions
+    const columns = [
+        {
+            title: 'Campaign Name',
+            dataIndex: 'campaignName',
+            key: 'campaignName',
+        },
+        {
+            title: 'Brand Name',
+            dataIndex: 'brandName',
+            key: 'brandName',
+        },
+        {
+            title: 'Influencers',
+            dataIndex: 'influencers',
+            key: 'influencers',
+        },
+        {
+            title: 'Campaign Status',
+            dataIndex: 'campaignStatus',
+            key: 'campaignStatus',
+        },
+        {
+            title: 'Start Date/End Date',
+            key: 'dateRange',
+            render: (_text: any, record: any) => (
+                <span>
+                    {record.startDate}/{record.endDate}
+                </span>
+            ),
+        },
+        {
+            title: 'Actions',
+            key: 'action',
+            render: () => (
+                <div className="flex items-center gap-3">
+                    <button onClick={() => setCampaignModal(true)} className="text-primary">
+                        <AiOutlineEye size={24} />
+                    </button>
+                    <button className="text-red-500">
+                        <AiOutlineDelete size={24} />
+                    </button>
+                </div>
+            ),
+        },
+    ];
     return (
-        <div className="container mx-auto p-5">
+        <div className="">
             <div className="flex items-center gap-5 justify-end mb-5">
                 <Input
                     style={{
@@ -157,6 +161,13 @@ const Campaign = () => {
                 </Select>
             </div>
             <Table columns={columns} dataSource={data} rowClassName="hover:bg-gray-100" />
+            <CustomModal
+                body={<CampaignDetails />}
+                open={campaignModal}
+                setOpen={setCampaignModal}
+                key={'campaign'}
+                width={1015}
+            />
         </div>
     );
 };

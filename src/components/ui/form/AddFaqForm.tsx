@@ -14,7 +14,12 @@ const AddFaqForm = ({ onFinish }: { onFinish: (values: any) => void }) => {
                 name="productName"
                 rules={[{ required: true, message: 'Please enter a question' }]}
             >
-                <Input placeholder="Your faq question" />
+                <Input
+                    style={{
+                        height: 42,
+                    }}
+                    placeholder="Your faq question"
+                />
             </Form.Item>
 
             {/* Description */}

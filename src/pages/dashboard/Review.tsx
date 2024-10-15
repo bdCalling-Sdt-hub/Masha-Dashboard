@@ -98,7 +98,7 @@ const Review = () => {
         },
     ];
     return (
-        <div className="container mx-auto p-5">
+        <div className="">
             <Table columns={columns} dataSource={data} rowClassName="hover:bg-gray-100" />
             <CustomModal
                 body={<ReviewForm />}

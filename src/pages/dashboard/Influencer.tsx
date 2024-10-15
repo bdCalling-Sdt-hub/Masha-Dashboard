@@ -133,7 +133,7 @@ const Influencer = () => {
         // Implement action handling logic here
     };
     return (
-        <div className="container mx-auto p-5">
+        <div className="">
             <div className="flex items-center gap-5 justify-end mb-5">
                 <Input
                     style={{
