@@ -1,103 +1,77 @@
-import { HiMiniUserGroup } from "react-icons/hi2";
+import { HiMiniUserGroup } from 'react-icons/hi2';
 
 const DashboardStats = () => {
-  const data = [
-    {
-      name: "Total User",
-      count: "20.10K",
-      title1: " Daily user",
-      total: "1025",
-      icon: <HiMiniUserGroup color="#DBB162" size={24} />,
-      bgColor: "#EFEFEF",
-      textColor: "#DBB162",
-    },
-    {
-      name: "Total Salon",
-      count: "920",
-      title1: " Daily user",
-      total: "125",
-      icon: <HiMiniUserGroup color="#DBB162" size={24} />,
-      textColor: "#8E3C50",
-      bgColor: "#EFEFEF",
-    },
-    {
-      name: "Total Earning",
-      count: "150.10K",
-      title1: " Daily donation",
-      total: "$2.5k",
-      icon: <HiMiniUserGroup color="#DBB162" size={24} />,
-      textColor: "#F16365",
-      bgColor: "#EFEFEF",
-    },
-  ];
-  return (
-    <div>
-      <div className="grid grid-cols-3 gap-3 items-center mt-4">
-        {data.map((item, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-md p-10 border"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-            }}
-          >
-            <div
-              style={{
-                background: `${item.bgColor}`,
-                width: "44px",
-                height: "44px",
-                borderRadius: "100%",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {item?.icon}
+    const data = [
+        {
+            name: 'Total Brands',
+            count: '20.10K',
+            icon: <HiMiniUserGroup color="#DBB162" size={24} />,
+            bgColor: '#fff',
+            textColor: '#DAA520',
+        },
+        {
+            name: 'Total Campaigns',
+            count: '920',
+            icon: <HiMiniUserGroup color="#DBB162" size={24} />,
+            textColor: '#3F0D47',
+            bgColor: '#fff',
+        },
+        {
+            name: 'Total Revenue',
+            count: '150.10K',
+            icon: <HiMiniUserGroup color="#DBB162" size={24} />,
+            textColor: '#00B047',
+            bgColor: '#fff',
+        },
+        {
+            name: 'Total Influencer',
+            count: '150.10K',
+            icon: <HiMiniUserGroup color="#DBB162" size={24} />,
+            textColor: '#D0A933',
+            bgColor: '#fff',
+        },
+        {
+            name: 'Monthly Collaboration',
+            count: '150.10K',
+            icon: <HiMiniUserGroup color="#DBB162" size={24} />,
+            textColor: '#3F0D47',
+            bgColor: '#fff',
+        },
+        {
+            name: 'Monthly Revenue',
+            count: '150.10K',
+            icon: <HiMiniUserGroup color="#DBB162" size={24} />,
+            textColor: '#00B047',
+            bgColor: '#fff',
+        },
+    ];
+
+    return (
+        <div>
+            <div className="grid grid-cols-3 gap-3 items-center">
+                {data.map((item, index) => (
+                    <div key={index} className="bg-[#EED698] rounded-md p-10 border flex items-center gap-3">
+                        <div className={`bg-white w-[44px] h-[44px] rounded-full flex items-center justify-center`}>
+                            {item?.icon}
+                        </div>
+                        <div className="flex-1 flex justify-between items-center">
+                            <p className="flex items-center justify-center text-lg text-[#242424] font-medium">
+                                {item.name}
+                            </p>
+                            <div>
+                                <p
+                                    style={{ color: item.textColor }} // Inline style for text color
+                                    className="text-3xl font-bold"
+                                >
+                                    {item.count} +
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
             </div>
-            <div
-              style={{
-                flex: 1,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <p
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "1.2em",
-                  fontWeight: "400",
-                  color: "#6A6D7C",
-                }}
-              >
-                {item.name}
-              </p>
-              <div>
-                <p
-                  style={{
-                    fontSize: "1.6em",
-                    fontWeight: "600",
-                    color: `${item?.textColor}`,
-                  }}
-                >
-                  {item.count} +
-                </p>
-                <p className="flex gap-3 items-center text-[#00B047] font-medium text-lg">
-                  {" "}
-                  <span> {item?.title1} </span> <span> {item?.total}</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default DashboardStats;

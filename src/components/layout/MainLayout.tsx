@@ -9,7 +9,7 @@ const { Content } = Layout;
 
 const MainLayout: React.FC = () => {
     const {
-        token: { colorBgContainer, borderRadiusLG },
+        token: { borderRadiusLG },
     } = theme.useToken();
 
     return (
@@ -26,10 +26,10 @@ const MainLayout: React.FC = () => {
                 <Content style={{ margin: 20 }}>
                     <div
                         style={{
-                            padding: 20,
+                            padding: 0,
                             minHeight: '50vh',
                             width: '100%',
-                            background: colorBgContainer,
+                            background: '#F6F6F6',
                             borderRadius: borderRadiusLG,
                         }}
                     >
