@@ -1,5 +1,5 @@
-import { Button, Divider, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Button, Divider } from 'antd';
+
 import Brand from '/influencer.svg';
 const InfluencerDetails = () => {
     return (
@@ -16,42 +16,35 @@ const InfluencerDetails = () => {
             <div className="flex gap-5 justify-between">
                 {/* Brand's Details Section */}
                 <div className="space-y-3 w-[49%]">
-                    <h3 className="text-2xl text-center font-semibold text-gray-800 mb-4">Brand's Details</h3>
+                    <h3 className="text-2xl text-center font-semibold text-gray-800 mb-4">Influencer’s Details</h3>
                     <p className="flex justify-between">
-                        <span className="font-medium">Company Name:</span>
-                        <span>Lionel Messi</span>
+                        <span className="font-medium">Full Name:</span>
+                        <span>Messi</span>
                     </p>
                     <p className="flex justify-between">
-                        <span className="font-medium">Category:</span>
-                        <span>Wellness & Beauty</span>
+                        <span className="font-medium">Gender:</span>
+                        <span>Female</span>
                     </p>
                     <p className="flex justify-between">
-                        <span className="font-medium">Email:</span>
-                        <span>irnabela@gmail.com</span>
-                    </p>
-                    <p className="flex justify-between">
-                        <span className="font-medium">What's App Number:</span>
-                        <span>(+33)7 00 55 59 27</span>
-                    </p>
-                    <p className="flex justify-between">
-                        <span className="font-medium">Phone Number:</span>
-                        <span>(+33)7 00 55 59 27</span>
-                    </p>
-                    <p className="flex justify-between">
-                        <span className="font-medium">Owner Name:</span>
-                        <span>Shanto Hasan</span>
+                        <span className="font-medium">Describe yourself within 3 words:</span>
+                        <span>Love this app</span>
                     </p>
                     <p className="flex justify-between">
                         <span className="font-medium">Contact Number:</span>
                         <span>(+33)7 00 55 59 27</span>
                     </p>
                     <p className="flex justify-between">
-                        <span className="font-medium">Manager's Details:</span>
-                        <span>Here...</span>
+                        <span className="font-medium">What's App Number:</span>
+                        <span>(+33)7 00 55 59 27</span>
                     </p>
                     <p className="flex justify-between">
-                        <span className="font-medium">Location:</span>
-                        <span>Apt. 738 2086 Marianne Parks</span>
+                        <span className="font-medium">Email:</span>
+                        <span>irnabela@gmail.com</span>
+                    </p>
+
+                    <p className="flex justify-between">
+                        <span className="font-medium">Phone Number:</span>
+                        <span>(+33)7 00 55 59 27</span>
                     </p>
                 </div>
 
@@ -71,11 +64,6 @@ const InfluencerDetails = () => {
                     </p>
 
                     <Divider type="vertical" className="my-4" />
-
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">ID Proof</h3>
-                    <Upload>
-                        <Button icon={<UploadOutlined />}>ID Proof</Button>
-                    </Upload>
 
                     <h3 className="text-lg font-semibold text-center text-gray-800 mt-6">Campaign Information</h3>
                     <p className="flex justify-between">

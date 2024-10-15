@@ -1,5 +1,5 @@
 import { TSidebarItem } from './generateSidebarItems';
-import { RiAdminFill } from 'react-icons/ri';
+
 import {
     AiOutlineBarChart,
     AiOutlineFileText,
@@ -9,6 +9,7 @@ import {
     AiOutlineUnorderedList,
     AiOutlineUsergroupAdd,
 } from 'react-icons/ai';
+import { TiUserOutline } from 'react-icons/ti';
 const sidebarItems: TSidebarItem[] = [
     {
         key: 'dashboard',
@@ -50,7 +51,7 @@ const sidebarItems: TSidebarItem[] = [
         key: 'add-admin',
         label: 'Add Admin',
         path: 'make-admin',
-        icon: <RiAdminFill size={24} />,
+        icon: <TiUserOutline size={24} />,
     },
     {
         key: 'terms',
