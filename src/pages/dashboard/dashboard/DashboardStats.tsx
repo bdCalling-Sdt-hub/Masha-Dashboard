@@ -1,4 +1,5 @@
-import { HiMiniUserGroup } from 'react-icons/hi2';
+import { FaHandshake } from 'react-icons/fa';
+import { HiCalendar, HiCurrencyDollar, HiMiniUser, HiMiniUserGroup } from 'react-icons/hi2';
 
 const DashboardStats = () => {
     const data = [
@@ -12,35 +13,35 @@ const DashboardStats = () => {
         {
             name: 'Total Campaigns',
             count: '920',
-            icon: <HiMiniUserGroup color="#DBB162" size={24} />,
+            icon: <HiCalendar color="#DBB162" size={24} />,
             textColor: '#3F0D47',
             bgColor: '#fff',
         },
         {
             name: 'Total Revenue',
             count: '150.10K',
-            icon: <HiMiniUserGroup color="#DBB162" size={24} />,
+            icon: <HiCurrencyDollar color="#DBB162" size={24} />,
             textColor: '#00B047',
             bgColor: '#fff',
         },
         {
             name: 'Total Influencer',
             count: '150.10K',
-            icon: <HiMiniUserGroup color="#DBB162" size={24} />,
+            icon: <HiMiniUser color="#DBB162" size={24} />,
             textColor: '#D0A933',
             bgColor: '#fff',
         },
         {
             name: 'Monthly Collaboration',
             count: '150.10K',
-            icon: <HiMiniUserGroup color="#DBB162" size={24} />,
+            icon: <FaHandshake color="#DBB162" size={24} />,
             textColor: '#3F0D47',
             bgColor: '#fff',
         },
         {
             name: 'Monthly Revenue',
             count: '150.10K',
-            icon: <HiMiniUserGroup color="#DBB162" size={24} />,
+            icon: <HiCurrencyDollar color="#DBB162" size={24} />,
             textColor: '#00B047',
             bgColor: '#fff',
         },

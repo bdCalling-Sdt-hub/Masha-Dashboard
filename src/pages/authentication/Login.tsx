@@ -1,10 +1,12 @@
 import { Button, Checkbox, ConfigProvider, Form, FormProps, Input } from 'antd';
 import { FieldNamesType } from 'antd/es/cascader';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const navigate = useNavigate();
     const onFinish: FormProps<FieldNamesType>['onFinish'] = (values) => {
         console.log('Received values of form: ', values);
+        navigate('/');
     };
 
     return (

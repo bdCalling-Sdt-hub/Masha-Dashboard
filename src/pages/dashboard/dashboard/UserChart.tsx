@@ -31,7 +31,7 @@ const UserChart = () => {
             }}
         >
             <div className="px-2 flex items-center justify-between">
-                <h1 className="text-2xl font-medium">Total users statistics</h1>
+                <h1 className="text-2xl font-medium">Total Users Statistics</h1>
                 <Select defaultValue="2024" className="w-32 h-[40px]">
                     <Option value="2024">2024</Option>
                     <Option value="2025">2025</Option>

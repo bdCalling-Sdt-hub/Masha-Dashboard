@@ -19,9 +19,11 @@ const items: TabsProps['items'] = [
 ];
 
 const Profile: React.FC = () => (
-    <ConfigProvider>
-        <Tabs defaultActiveKey="1" items={items} />
-    </ConfigProvider>
+    <div className="bg-white p-6">
+        <ConfigProvider>
+            <Tabs defaultActiveKey="1" items={items} />
+        </ConfigProvider>
+    </div>
 );
 
 export default Profile;

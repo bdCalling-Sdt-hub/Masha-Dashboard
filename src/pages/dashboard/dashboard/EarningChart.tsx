@@ -1,94 +1,22 @@
 import { Select } from 'antd';
-import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 const { Option } = Select;
-const EarningChart = () => {
-    const data = [
-        {
-            name: 'Jan',
-            uv: 4000,
-            pv: 2400,
-            tv: '12k',
-            amt: 10,
-        },
-        {
-            name: 'Feb',
-            uv: 3000,
-            pv: 1398,
-            tv: 1200,
-            amt: 20,
-        },
-        {
-            name: 'Mar',
-            uv: 2000,
-            pv: 9800,
-            tv: 1200,
-            amt: 30,
-        },
-        {
-            name: 'Apr',
-            uv: 2780,
-            pv: 3908,
-            tv: 1200,
-            amt: 40,
-        },
-        {
-            name: 'May',
-            uv: 1890,
-            pv: 4800,
-            tv: 1200,
-            amt: 50,
-        },
-        {
-            name: 'Jun',
-            uv: 2390,
-            pv: 3800,
-            tv: 1200,
-            amt: 60,
-        },
-        {
-            name: 'Jul',
-            uv: 3490,
-            pv: 4300,
-            tv: 1200,
-            amt: 70,
-        },
-        {
-            name: 'Aug',
-            uv: 3490,
-            pv: 4300,
-            tv: 1200,
-            amt: 80,
-        },
-        {
-            name: 'Sep',
-            uv: 3490,
-            pv: 4300,
-            tv: 1200,
-            amt: 90,
-        },
-        {
-            name: 'Oct',
-            uv: 3490,
-            pv: 4300,
-            tv: 1200,
-            amt: 100,
-        },
-        {
-            name: 'Nov',
-            uv: 3490,
-            pv: 4300,
-            tv: 1200,
-            amt: 110,
-        },
-        {
-            name: 'Dec',
-            uv: 3490,
-            pv: 4300,
-            tv: 1200,
-            amt: 120,
-        },
-    ];
+const data = [
+    { name: 'Jan', earnings: 8000 },
+    { name: 'Feb', earnings: 12000 },
+    { name: 'Mar', earnings: 10000 },
+    { name: 'Apr', earnings: 22314 },
+    { name: 'May', earnings: 16000 },
+    { name: 'Jun', earnings: 15000 },
+    { name: 'Jul', earnings: 11000 },
+    { name: 'Aug', earnings: 17000 },
+    { name: 'Sep', earnings: 9000 },
+    { name: 'Oct', earnings: 15000 },
+    { name: 'Nov', earnings: 14000 },
+    { name: 'Dec', earnings: 17000 },
+];
 
+const EarningChart = () => {
     return (
         <div
             style={{
@@ -109,28 +37,20 @@ const EarningChart = () => {
                     <Option value="2030">2030</Option>
                 </Select>
             </div>
-            <ResponsiveContainer width={'100%'} height={350}>
-                <AreaChart data={data} barGap={100}>
-                    <defs>
-                        <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#574715" stopOpacity={1} />
-                            <stop offset="70%" stopColor="#89acf729" stopOpacity={1} />
-                            <stop offset="100%" stopColor="#FFFFFF2D" stopOpacity={1} />
-                        </linearGradient>
-                    </defs>
-                    <CartesianGrid horizontal vertical={false} />
-                    <XAxis
-                        dataKey="name"
-                        padding="gap"
-                        minTickGap={2}
-                        fontSize="12px"
-                        fontWeight="400"
-                        strokeOpacity={0}
-                    />
-                    <YAxis tickCount={5} width={40} fontSize="12px" fontWeight="400" strokeOpacity={0} />
+            <ResponsiveContainer width="100%" height={350}>
+                <LineChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis domain={[5000, 25000]} />
                     <Tooltip />
-                    <Area connectNulls type="monotone" dataKey="uv" stroke="#0D2247" fill="url(#colorUv)" />
-                </AreaChart>
+                    <Line
+                        type="monotone"
+                        dataKey="earnings"
+                        stroke="#6C4A00"
+                        strokeWidth={2}
+                        dot={{ fill: '#6C4A00', stroke: '#6C4A00', strokeWidth: 2, r: 4 }}
+                    />
+                </LineChart>
             </ResponsiveContainer>
         </div>
     );
