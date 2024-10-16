@@ -90,12 +90,12 @@ const Brands = () => {
             key: 'status',
             render: (status: string) => (
                 <span
-                    className={`px-3 py-1 rounded-full text-white font-semibold ${
+                    className={`px-3 py-1 rounded-full  font-semibold ${
                         status === 'Approved'
-                            ? 'bg-[#00B69B] text-white'
+                            ? 'bg-[#ccf0eb] text-[#00B69B]'
                             : status === 'Pending'
-                            ? 'bg-[#6226EF]'
-                            : 'bg-red-500'
+                            ? 'bg-[#e0d4fc] text-[#6226EF]'
+                            : 'bg-[#fcd7d4] text-[#EF3826]'
                     }`}
                 >
                     {status}
@@ -148,23 +148,28 @@ const Brands = () => {
     };
     return (
         <div className="">
-            <div className="flex items-center gap-5 justify-end mb-5">
-                <Input
-                    style={{
-                        maxWidth: 300,
-                        height: 42,
-                    }}
-                    placeholder="Search"
-                    prefix={<SearchOutlined />}
-                />
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-3xl text-primary font-semibold">Manage Brands</h1>
+                </div>
+                <div className="flex items-center gap-5 justify-end mb-5">
+                    <Input
+                        style={{
+                            maxWidth: 300,
+                            height: 42,
+                        }}
+                        placeholder="Search"
+                        prefix={<SearchOutlined />}
+                    />
 
-                {/* Dropdown Filter */}
-                <Select defaultValue="All" className="w-32 h-[42px]">
-                    <Option value="All">All</Option>
-                    <Option value="Active">Active</Option>
-                    <Option value="Inactive">Inactive</Option>
-                    <Option value="Pending">Pending</Option>
-                </Select>
+                    {/* Dropdown Filter */}
+                    <Select defaultValue="All" className="w-40 h-[42px]">
+                        <Option value="All">All</Option>
+                        <Option value="Active">Active</Option>
+                        <Option value="Inactive">Inactive</Option>
+                        <Option value="Pending">Pending</Option>
+                    </Select>
+                </div>
             </div>
             <Table columns={columns} dataSource={data} rowClassName="hover:bg-gray-100" />
 

@@ -89,7 +89,14 @@ const Influencer = () => {
             dataIndex: 'status',
             key: 'status',
             render: (status: string) => (
-                <span className={status === 'Active' ? 'text-green-500' : 'text-red-500'}>{status}</span>
+                <span
+                    style={{
+                        fontWeight: 500,
+                    }}
+                    className={status === 'Active' ? 'text-[#00B69B]' : 'text-red-500'}
+                >
+                    {status}
+                </span>
             ),
         },
         {
@@ -134,23 +141,28 @@ const Influencer = () => {
     };
     return (
         <div className="">
-            <div className="flex items-center gap-5 justify-end mb-5">
-                <Input
-                    style={{
-                        maxWidth: 300,
-                        height: 42,
-                    }}
-                    placeholder="Search"
-                    prefix={<SearchOutlined />}
-                />
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-3xl text-primary font-semibold">Manage Influencer</h1>
+                </div>
+                <div className="flex items-center gap-5 justify-end mb-5">
+                    <Input
+                        style={{
+                            maxWidth: 300,
+                            height: 42,
+                        }}
+                        placeholder="Search"
+                        prefix={<SearchOutlined />}
+                    />
 
-                {/* Dropdown Filter */}
-                <Select defaultValue="All" className="w-32 h-[42px]">
-                    <Option value="All">All</Option>
-                    <Option value="Active">Active</Option>
-                    <Option value="Inactive">Inactive</Option>
-                    <Option value="Pending">Pending</Option>
-                </Select>
+                    {/* Dropdown Filter */}
+                    <Select defaultValue="All" className="w-40 h-[42px]">
+                        <Option value="All">All</Option>
+                        <Option value="Active">Active</Option>
+                        <Option value="Inactive">Inactive</Option>
+                        <Option value="Pending">Pending</Option>
+                    </Select>
+                </div>
             </div>
             <Table columns={columns} dataSource={influencerData} rowClassName="hover:bg-gray-100" />
             <CustomModal

@@ -113,7 +113,7 @@ const Categories = () => {
         <div>
             <Flex className="my-2" vertical={false} gap={10} align="center" justify="space-between">
                 <div>
-                    <h1 className="text-3xl text-primary font-semibold">Categories</h1>
+                    <h1 className="text-3xl text-primary font-semibold">Manage Categories</h1>
                 </div>
 
                 <div
@@ -133,17 +133,7 @@ const Categories = () => {
                 </div>
             </Flex>
 
-            <ConfigProvider
-                theme={{
-                    components: {
-                        Table: {
-                            headerBg: '#E9EFFA',
-                            headerBorderRadius: 0,
-                            rowHoverBg: '#F5F5F5',
-                        },
-                    },
-                }}
-            >
+            <ConfigProvider>
                 <Table columns={columns} dataSource={categories} />
             </ConfigProvider>
 

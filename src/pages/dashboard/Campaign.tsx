@@ -142,23 +142,28 @@ const Campaign = () => {
     ];
     return (
         <div className="">
-            <div className="flex items-center gap-5 justify-end mb-5">
-                <Input
-                    style={{
-                        maxWidth: 300,
-                        height: 42,
-                    }}
-                    placeholder="Search"
-                    prefix={<SearchOutlined />}
-                />
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-3xl text-primary font-semibold">Manage Campaign</h1>
+                </div>
+                <div className="flex items-center gap-5 justify-end mb-5">
+                    <Input
+                        style={{
+                            maxWidth: 300,
+                            height: 42,
+                        }}
+                        placeholder="Search"
+                        prefix={<SearchOutlined />}
+                    />
 
-                {/* Dropdown Filter */}
-                <Select defaultValue="All" className="w-32 h-[42px]">
-                    <Option value="All">All</Option>
-                    <Option value="Active">Active</Option>
-                    <Option value="Inactive">Inactive</Option>
-                    <Option value="Pending">Pending</Option>
-                </Select>
+                    {/* Dropdown Filter */}
+                    <Select defaultValue="All" className="w-40 h-[42px]">
+                        <Option value="All">All</Option>
+                        <Option value="Active">Active</Option>
+                        <Option value="Inactive">Inactive</Option>
+                        <Option value="Pending">Pending</Option>
+                    </Select>
+                </div>
             </div>
             <Table columns={columns} dataSource={data} rowClassName="hover:bg-gray-100" />
             <CustomModal

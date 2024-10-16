@@ -121,15 +121,15 @@ const MakeAdmin = () => {
             </Flex>
 
             <ConfigProvider
-                theme={{
-                    components: {
-                        Table: {
-                            headerBg: '#E9EFFA',
-                            headerBorderRadius: 0,
-                            rowHoverBg: '#F5F5F5',
-                        },
-                    },
-                }}
+            // theme={{
+            //     components: {
+            //         Table: {
+            //             headerBg: '#E9EFFA',
+            //             headerBorderRadius: 0,
+            //             rowHoverBg: '#F5F5F5',
+            //         },
+            //     },
+            // }}
             >
                 <Table columns={columns} dataSource={dummyData} />
             </ConfigProvider>
