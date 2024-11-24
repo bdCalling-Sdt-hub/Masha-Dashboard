@@ -23,7 +23,7 @@ const MainLayout: React.FC = () => {
                 {/* header */}
 
                 <HeaderDashboard />
-                <Content style={{ margin: 20 }}>
+                <Content style={{ margin: 20  }} className='overflow-y-auto'>
                     <div
                         style={{
                             padding: 0,
@@ -31,7 +31,8 @@ const MainLayout: React.FC = () => {
                             width: '100%',
                             background: '#F6F6F6',
                             borderRadius: borderRadiusLG,
-                        }}
+                        }} 
+                         className='overflow-y-auto'
                     >
                         <Outlet />
                     </div>

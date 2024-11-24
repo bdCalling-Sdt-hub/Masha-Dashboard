@@ -1,17 +1,104 @@
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Modal } from 'antd';
+import { useEffect } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { useAddFaqMutation, useUpdateFaqMutation } from '../../../redux/features/faqApi';
+import Swal from 'sweetalert2';
 
 const { TextArea } = Input;
+ //@ts-ignore
+const AddFaqForm = ({openEditModal ,setEditModal ,setOpenModal , openModal , refetch }) => {
+    const [form] = Form.useForm()
+    const [addFaq] = useAddFaqMutation() 
+    const [updateFaq]= useUpdateFaqMutation() 
+   
+    useEffect(()=>{  
+      if(openEditModal){
+        form.setFieldsValue({question:openEditModal?.question , answer:openEditModal?.answer})
+      }
+      
+    } ,[openEditModal , form])
+  
+    const onFinish =async(values:{question:string , answer:string})=>{
+  //console.log(values);  
+  const data ={
+    _id:openEditModal?._id ,
+    question:values?.question ,
+    answer:values?.answer
+  }
+  
+  if(openEditModal){
+  await updateFaq(data).then((res)=>{
+    //console.log(res); 
+    if(res?.data?.success){
+      Swal.fire({
+          text:res?.data?.message,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          refetch();   
+          setEditModal(null)  
+          form.resetFields() 
+          setOpenModal(false);
+        })
+  }else{
+      Swal.fire({
+          title: "Oops", 
+           //@ts-ignore
+          text: res?.error?.data?.message,
+          icon: "error",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+    
+  }
+  })
+  }else{
+    await addFaq(values).then((res)=>{
+      //console.log(res); 
+      if(res?.data?.success){
+        Swal.fire({
+            text:res?.data?.message,
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            refetch();    
+            setOpenModal(false); 
+            setEditModal(null)  
+            form.resetFields() 
+          })
+    }else{
+        Swal.fire({
+            title: "Oops", 
+             //@ts-ignore
+            text: res?.error?.data?.message,
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false,
+          });
+      
+    } 
+    })
+  }
+    }
 
-const AddFaqForm = ({ onFinish }: { onFinish: (values: any) => void }) => {
-    const [form] = Form.useForm();
-
-    return (
-        <Form form={form} layout="vertical" onFinish={onFinish}>
-            {/* Product Name */}
+    return ( 
+        <Modal
+        centered
+        open={openModal} 
+        title={openEditModal?._id ? "Edit FAQ" : "Add FAQ"}
+        onCancel={() => {setOpenModal(false)  
+            setEditModal(null)
+          form.resetFields()
+        }}
+        width={500}
+        footer={false}
+      > 
+        <Form  layout="vertical" onFinish={onFinish} form={form}>
             <Form.Item
                 label="Question"
-                name="productName"
+                name="question"
                 rules={[{ required: true, message: 'Please enter a question' }]}
             >
                 <Input
@@ -46,10 +133,11 @@ const AddFaqForm = ({ onFinish }: { onFinish: (values: any) => void }) => {
                     }}
                     type="primary"
                 >
-                    Add FAQ
+                 {openEditModal?._id ? "Edit FAQ" : "Add FAQ"} 
                 </Button>
             </Form.Item>
-        </Form>
+        </Form> 
+        </Modal>
     );
 };
 

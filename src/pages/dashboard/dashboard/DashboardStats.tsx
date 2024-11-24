@@ -1,46 +1,50 @@
 import { FaHandshake } from 'react-icons/fa';
 import { HiCalendar, HiCurrencyDollar, HiMiniUser, HiMiniUserGroup } from 'react-icons/hi2';
+import { useSummaryFirstRowQuery, useSummarySecondRowQuery } from '../../../redux/features/homeApi';
 
-const DashboardStats = () => {
+const DashboardStats = () => { 
+    const {data:firstRow} = useSummaryFirstRowQuery(undefined) 
+    const {data:secondRow} = useSummarySecondRowQuery(undefined) 
+
     const data = [
         {
             name: 'Total Brands',
-            count: '20.10K',
+            count: firstRow?.data?.totalBrands,
             icon: <HiMiniUserGroup color="#DBB162" size={24} />,
             bgColor: '#fff',
             textColor: '#DAA520',
         },
         {
             name: 'Total Campaigns',
-            count: '920',
+            count: firstRow?.data?.totalCampaigns,
             icon: <HiCalendar color="#DBB162" size={24} />,
             textColor: '#3F0D47',
             bgColor: '#fff',
         },
         {
             name: 'Total Revenue',
-            count: '150.10K',
+            count: firstRow?.data?.totalRevenue,
             icon: <HiCurrencyDollar color="#DBB162" size={24} />,
             textColor: '#00B047',
             bgColor: '#fff',
         },
         {
             name: 'Total Influencer',
-            count: '150.10K',
+            count: secondRow?.data?.totalInfluencer,
             icon: <HiMiniUser color="#DBB162" size={24} />,
             textColor: '#D0A933',
             bgColor: '#fff',
         },
         {
             name: 'Monthly Collaboration',
-            count: '150.10K',
+            count: secondRow?.data?.totalCollaboration,
             icon: <FaHandshake color="#DBB162" size={24} />,
             textColor: '#3F0D47',
             bgColor: '#fff',
         },
         {
             name: 'Monthly Revenue',
-            count: '150.10K',
+            count: secondRow?.data?.latestMonthlyRevenue,
             icon: <HiCurrencyDollar color="#DBB162" size={24} />,
             textColor: '#00B047',
             bgColor: '#fff',
@@ -64,7 +68,7 @@ const DashboardStats = () => {
                                     style={{ color: item.textColor }} // Inline style for text color
                                     className="text-3xl font-bold"
                                 >
-                                    {item.count} +
+                                    {item.count} 
                                 </p>
                             </div>
                         </div>

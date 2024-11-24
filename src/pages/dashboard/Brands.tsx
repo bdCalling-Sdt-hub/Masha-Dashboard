@@ -4,68 +4,35 @@ import { SearchOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import CustomModal from '../../components/shared/CustomModal';
 import BrandDetails from '../../components/ui/BrandDetails';
+import { useGetBrandQuery } from '../../redux/features/brandApi';
 const { Option } = Select;
 // Sample data
 
 const Brands = () => {
-    const [showBrand, setShowBrand] = useState(false);
+    const [showBrand, setShowBrand] = useState(false); 
+    const [modalData , setModalData] = useState()
+    const [page , setPage] = useState(1) 
+    const [status , setStatus] = useState() 
+    const [search , setSearch] = useState()
+    const {data:brands , refetch} = useGetBrandQuery({search:search , status:status , page:page})
+ const brandsData = brands?.data 
+ const data = brandsData?.result?.map((value:any , index:number)=>({
+    key: index+1, 
+    id:value?._id ,
+    name: value?.fullName,
+    email: value?.email,
+    status: value?.loginStatus, 
+     category: value?.brand?.category, 
+     whatsapp: value?.brand?.whatAppNum , 
+     contact: value?.brand?.phnNum ,
+     ownerName: value?.brand?.owner, 
+     address: value?.brand?.address, 
+     image: value?.brand?.image, 
+     instagramLink: value?.brand?.instagram, 
+     tiktokLink: value?.brand?.tiktok, 
 
-    const data = [
-        {
-            key: '00001',
-            name: 'Christine Brooks',
-            email: 'alma.lawson@example.com',
-            status: 'Approved',
-        },
-        {
-            key: '00002',
-            name: 'Rosie Pearson',
-            email: 'tim.jennings@example.com',
-            status: 'Pending',
-        },
-        {
-            key: '00003',
-            name: 'Darrell Caldwell',
-            email: 'debra.holt@example.com',
-            status: 'Rejected',
-        },
-        {
-            key: '00004',
-            name: 'Gilbert Johnston',
-            email: 'kenzi.lawson@example.com',
-            status: 'Approved',
-        },
-        {
-            key: '00005',
-            name: 'Alan Cain',
-            email: 'willie.jennings@example.com',
-            status: 'Pending',
-        },
-        {
-            key: '00006',
-            name: 'Alfred Murray',
-            email: 'georgia.young@example.com',
-            status: 'Pending',
-        },
-        {
-            key: '00007',
-            name: 'Maggie Sullivan',
-            email: 'michelle.rivera@example.com',
-            status: 'Approved',
-        },
-        {
-            key: '00008',
-            name: 'Rosie Todd',
-            email: 'bill.sanders@example.com',
-            status: 'Rejected',
-        },
-        {
-            key: '00009',
-            name: 'Dollie Hines',
-            email: 'deanna.curtis@example.com',
-            status: 'Approved',
-        },
-    ];
+
+ }))
 
     // Column definitions
     const columns = [
@@ -112,23 +79,7 @@ const Brands = () => {
                         items: [
                             {
                                 key: 'view',
-                                label: <span onClick={() => setShowBrand(true)}>View</span>,
-                            },
-                            {
-                                key: 'recommend',
-                                label: <span onClick={() => handleAction('recommend', record)}>Recommend Creator</span>,
-                            },
-                            {
-                                key: 'disable',
-                                label: <span onClick={() => handleAction('disable', record)}>Disable User</span>,
-                            },
-                            {
-                                key: 'enable',
-                                label: <span onClick={() => handleAction('enable', record)}>Enable User</span>,
-                            },
-                            {
-                                key: 'remove',
-                                label: <span onClick={() => handleAction('remove', record)}>Remove</span>,
+                                label: <span onClick={() =>{ setShowBrand(true) , setModalData(record)}}>View</span>,
                             },
                         ],
                     }}
@@ -142,10 +93,15 @@ const Brands = () => {
         },
     ];
 
-    const handleAction = (action: any, record: any) => {
-        console.log(action, record);
-        // Implement action handling logic here
-    };
+    const handleStatus = (values:any) =>{
+        setStatus(values)
+           } 
+       
+       const handleSearch = (e:any) =>{
+           const search = e.target.value  
+           setSearch(search)
+       } 
+
     return (
         <div className="">
             <div className="flex justify-between items-center">
@@ -153,27 +109,35 @@ const Brands = () => {
                     <h1 className="text-3xl text-primary font-semibold">Manage Brands</h1>
                 </div>
                 <div className="flex items-center gap-5 justify-end mb-5">
-                    <Input
+                <Input
                         style={{
                             maxWidth: 300,
                             height: 42,
                         }}
                         placeholder="Search"
-                        prefix={<SearchOutlined />}
+                        prefix={<SearchOutlined />} 
+                        onChange={(e)=>handleSearch(e)}
                     />
 
                     {/* Dropdown Filter */}
-                    <Select defaultValue="All" className="w-40 h-[42px]">
-                        <Option value="All">All</Option>
-                        <Option value="Active">Active</Option>
-                        <Option value="Inactive">Inactive</Option>
+                    <Select defaultValue="All" className="w-40 h-[42px]" onChange={handleStatus}>
+                        <Option value="">All</Option>
+                        <Option value="Approved">Approved</Option>
                         <Option value="Pending">Pending</Option>
-                    </Select>
+                        <Option value="Rejected">Rejected</Option>
+                    </Select> 
                 </div>
             </div>
-            <Table columns={columns} dataSource={data} rowClassName="hover:bg-gray-100" />
+            <Table columns={columns} dataSource={data} rowClassName="hover:bg-gray-100" 
+            pagination={{
+                current: page,
+                total: brandsData?.meta?.total,
+                pageSize: 10,  
+                onChange: (page) => setPage(page),
+            }} 
+             />
 
-            <CustomModal open={showBrand} setOpen={setShowBrand} body={<BrandDetails />} key={'brand'} width={900} />
+            <CustomModal open={showBrand} setOpen={setShowBrand} body={<BrandDetails modalData={modalData} refetch={refetch} setShowBrand={setShowBrand} />} key={'brand'} width={900} />
         </div>
     );
 };

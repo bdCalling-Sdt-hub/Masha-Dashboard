@@ -4,75 +4,49 @@ import { SearchOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import CustomModal from '../../components/shared/CustomModal';
 import InfluencerDetails from '../../components/ui/InfluencerDetails';
+import { useGetInfluencerQuery } from '../../redux/features/influencerApi';
 const { Option } = Select;
 // Sample data
-const influencerData = [
-    {
-        id: '00001',
-        name: 'Christine Brooks',
-        email: 'alma.lawson@example.com',
-        status: 'Active',
-    },
-    {
-        id: '00002',
-        name: 'Rosie Pearson',
-        email: 'tim.jennings@example.com',
-        status: 'Inactive',
-    },
-    {
-        id: '00003',
-        name: 'Darrell Caldwell',
-        email: 'debra.holt@example.com',
-        status: 'Active',
-    },
-    {
-        id: '00004',
-        name: 'Gilbert Johnston',
-        email: 'kenzi.lawson@example.com',
-        status: 'Inactive',
-    },
-    {
-        id: '00005',
-        name: 'Alan Cain',
-        email: 'willie.jennings@example.com',
-        status: 'Inactive',
-    },
-    {
-        id: '00006',
-        name: 'Alfred Murray',
-        email: 'georgia.young@example.com',
-        status: 'Active',
-    },
-    {
-        id: '00007',
-        name: 'Maggie Sullivan',
-        email: 'michelle.rivera@example.com',
-        status: 'Inactive',
-    },
-    {
-        id: '00008',
-        name: 'Rosie Todd',
-        email: 'bill.sanders@example.com',
-        status: 'Inactive',
-    },
-    {
-        id: '00009',
-        name: 'Dollie Hines',
-        email: 'deanna.curtis@example.com',
-        status: 'Active',
-    },
-];
+
 
 // Column definitions
 
 const Influencer = () => {
-    const [showInfluencerDetails, setInfluencerDetails] = useState(false);
+    const [showInfluencerDetails, setInfluencerDetails] = useState(false);   
+    const [modalData , setModalData] = useState()
+    const [page , setPage] = useState(1) 
+    const [status , setStatus] = useState() 
+    const [search , setSearch] = useState()
+    const {data:influencers , refetch} = useGetInfluencerQuery({search:search , status:status , page:page})  
+    const influencersData = influencers?.data 
+
+const influencerData = influencersData?.result?.map((value:any , index:number)=>({
+    id: value?._id, 
+    key: index+1 ,
+    name: value?.fullName,
+    email: value?.influencer?.email, 
+    status: value?.loginStatus, 
+    gender: value?.influencer?.gender, 
+  describe: value?.influencer?.describe , 
+  contact: value?.influencer?.number , 
+  whatsapp: value?.influencer?.whatAppNum , 
+  address: value?.influencer?.address , 
+  city: value?.influencer?.city ,
+  zip: value?.influencer?.zip , 
+  country: value?.influencer?.country ,
+  tiktok: value?.influencer?.tiktok, 
+  instagram: value?.influencer?.instagram, 
+  followerIns: value?.influencer?.followersIG, 
+  followerTk: value?.influencer?.followersTK,
+  image: value?.influencer?.image,
+}))
+
 
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
+            title: 'S.No',
+            dataIndex: 'key',
+            key: 'key',
         },
         {
             title: "Influencer's Name",
@@ -108,20 +82,7 @@ const Influencer = () => {
                         items: [
                             {
                                 key: 'view',
-                                label: <span onClick={() => setInfluencerDetails(true)}>View</span>,
-                            },
-
-                            {
-                                key: 'disable',
-                                label: <span onClick={() => handleAction('disable', record)}>Disable User</span>,
-                            },
-                            {
-                                key: 'enable',
-                                label: <span onClick={() => handleAction('enable', record)}>Enable User</span>,
-                            },
-                            {
-                                key: 'remove',
-                                label: <span onClick={() => handleAction('remove', record)}>Remove</span>,
+                                label: <span onClick={() => {setInfluencerDetails(true) , setModalData(record)}}>View</span>,
                             },
                         ],
                     }}
@@ -134,11 +95,16 @@ const Influencer = () => {
             ),
         },
     ];
+ 
+    const handleStatus = (values:any) =>{
+ setStatus(values)
+    } 
 
-    const handleAction = (action: any, record: any) => {
-        console.log(action, record);
-        // Implement action handling logic here
-    };
+const handleSearch = (e:any) =>{
+    const search = e.target.value  
+    setSearch(search)
+}
+
     return (
         <div className="">
             <div className="flex justify-between items-center">
@@ -152,23 +118,31 @@ const Influencer = () => {
                             height: 42,
                         }}
                         placeholder="Search"
-                        prefix={<SearchOutlined />}
+                        prefix={<SearchOutlined />} 
+                        onChange={(e)=>handleSearch(e)}
                     />
 
                     {/* Dropdown Filter */}
-                    <Select defaultValue="All" className="w-40 h-[42px]">
-                        <Option value="All">All</Option>
-                        <Option value="Active">Active</Option>
-                        <Option value="Inactive">Inactive</Option>
+                    <Select defaultValue="All" className="w-40 h-[42px]" onChange={handleStatus}>
+                        <Option value="">All</Option>
+                        <Option value="Approved">Approved</Option>
                         <Option value="Pending">Pending</Option>
+                        <Option value="Rejected">Rejected</Option>
                     </Select>
                 </div>
             </div>
-            <Table columns={columns} dataSource={influencerData} rowClassName="hover:bg-gray-100" />
+            <Table columns={columns} dataSource={influencerData} rowClassName="hover:bg-gray-100" 
+            pagination={{
+                current: page,
+                total: influencersData?.meta?.total,
+                pageSize: 10,  
+                onChange: (page) => setPage(page),
+            }}  
+             />
             <CustomModal
                 open={showInfluencerDetails}
                 setOpen={setInfluencerDetails}
-                body={<InfluencerDetails />}
+                body={<InfluencerDetails modalData={modalData} refetch={refetch} setInfluencerDetails={setInfluencerDetails} />}
                 key={'influencer-details'}
                 width={900}
             />

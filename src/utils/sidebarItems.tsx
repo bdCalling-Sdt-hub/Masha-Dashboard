@@ -4,9 +4,9 @@ import { TSidebarItem } from './generateSidebarItems';
 import { AiOutlineFileText, AiOutlineQuestionCircle, AiOutlineStar } from 'react-icons/ai';
 import { CiMedal } from 'react-icons/ci';
 import { IoBarChartOutline } from 'react-icons/io5';
-import { RiUserStarLine } from 'react-icons/ri';
-import { BsMegaphone, BsPersonGear } from 'react-icons/bs';
-import { TbLogout } from 'react-icons/tb';
+import { RiDiscountPercentLine, RiUserStarLine } from 'react-icons/ri';
+import { BsMegaphone, BsPersonGear, BsPersonRolodex } from 'react-icons/bs';
+import { TbBrandTrello, TbLogout } from 'react-icons/tb';
 const sidebarItems: TSidebarItem[] = [
     {
         key: 'dashboard',
@@ -45,6 +45,12 @@ const sidebarItems: TSidebarItem[] = [
         icon: <BsMegaphone size={24} />,
     },
     {
+        label: 'Discount Club',
+        key: 'discount-club',
+        path: 'discount-club',
+        icon: <RiDiscountPercentLine size={24} />,
+    },
+    {
         key: 'add-admin',
         label: 'Add Admin',
         path: 'make-admin',
@@ -55,6 +61,18 @@ const sidebarItems: TSidebarItem[] = [
         label: 'Terms & Conditions',
         path: 'terms',
         icon: <AiOutlineFileText size={24} />,
+    },
+    {
+        key: 'influencer-terms',
+        label: 'Influencer Terms',
+        path: 'influencer-terms',
+        icon: <BsPersonRolodex size={24} />,
+    },
+    {
+        key: 'brand-terms',
+        label: 'Brand Terms',
+        path: 'brand-terms',
+        icon: <TbBrandTrello size={24} />,
     },
     {
         key: 'faqs',

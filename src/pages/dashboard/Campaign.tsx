@@ -5,94 +5,37 @@ import { AiOutlineDelete, AiOutlineEye } from 'react-icons/ai';
 import { useState } from 'react';
 import CustomModal from '../../components/shared/CustomModal';
 import CampaignDetails from '../../components/ui/CampaignDetails';
+import { useGetCampaignQuery } from '../../redux/features/campaignApi';
+import moment from 'moment';
+import { imageUrl } from '../../redux/baseApi';
 const { Option } = Select;
-// Sample data
-const data = [
-    {
-        key: '1',
-        campaignName: 'Campaign 1',
-        brandName: 'Christine Brooks',
-        influencers: 14,
-        campaignStatus: 'Active',
-        startDate: '02-02-2024',
-        endDate: '05-02-2024',
-    },
-    {
-        key: '2',
-        campaignName: 'Campaign 2',
-        brandName: 'Rosie Pearson',
-        influencers: 53,
-        campaignStatus: 'Pending',
-        startDate: '02-02-2024',
-        endDate: '05-02-2024',
-    },
-    {
-        key: '3',
-        campaignName: 'Campaign 3',
-        brandName: 'Darrell Caldwell',
-        influencers: 14,
-        campaignStatus: 'Completed',
-        startDate: '02-02-2024',
-        endDate: '05-02-2024',
-    },
-    {
-        key: '4',
-        campaignName: 'Campaign 4',
-        brandName: 'Gilbert Johnston',
-        influencers: 14,
-        campaignStatus: 'Inactive',
-        startDate: '02-02-2024',
-        endDate: '05-02-2024',
-    },
-    {
-        key: '5',
-        campaignName: 'Campaign 5',
-        brandName: 'Alan Cain',
-        influencers: 14,
-        campaignStatus: 'Completed',
-        startDate: '02-02-2024',
-        endDate: '05-02-2024',
-    },
-    {
-        key: '6',
-        campaignName: 'Campaign 6',
-        brandName: 'Alfred Murray',
-        influencers: 14,
-        campaignStatus: 'Active',
-        startDate: '02-02-2024',
-        endDate: '05-02-2024',
-    },
-    {
-        key: '7',
-        campaignName: 'Campaign 7',
-        brandName: 'Maggie Sullivan',
-        influencers: 14,
-        campaignStatus: 'Completed',
-        startDate: '02-02-2024',
-        endDate: '05-02-2024',
-    },
-    {
-        key: '8',
-        campaignName: 'Campaign 8',
-        brandName: 'Rosie Todd',
-        influencers: 14,
-        campaignStatus: 'Inactive',
-        startDate: '02-02-2024',
-        endDate: '05-02-2024',
-    },
-    {
-        key: '9',
-        campaignName: 'Campaign 9',
-        brandName: 'Dollie Hines',
-        influencers: 14,
-        campaignStatus: 'Active',
-        startDate: '02-02-2024',
-        endDate: '05-02-2024',
-    },
-];
 
 const Campaign = () => {
-    const [campaignModal, setCampaignModal] = useState(false);
+    const [campaignModal, setCampaignModal] = useState(false);  
+    const [campaignData , setCampaignData] = useState()  
+    const [status , setStatus]=  useState("") 
+    const [search , setSearch] = useState() 
+    const [page , setPage] = useState(1)
+    const {data:Campaigns} = useGetCampaignQuery({search:search , status:status , page:page})   
+    const campaignsData = Campaigns?.data 
+
+    const data = campaignsData?.result?.map((value:any , index:number)=>({
+        key: index+1,
+        campaignName: value?.name, 
+        image: value?.image?.startsWith("https") ? value?.image : `${imageUrl}${value?.image}` ,
+        brandName: value?.user?.brand?.owner,
+        campaignStatus: value?.approvalStatus,
+        startDate: moment(value?.startTime).format("YYYY-MM-D") ,
+        endDate:  moment(value?.endTime).format("YYYY-MM-D"), 
+        address: value?.address ,
+        gender:value?.gender ,
+        details:value?.details ,  
+        eventDate : moment(value?.startTime).format("YYYY/MM/D , h:mm a") ,
+        instagram: value?.brandInstagram , 
+        addressLink:value?.addressLink , 
+        terms:value?.campaignTermAndCondition ,
+        id:value?._id
+    }))
 
     // Column definitions
     const columns = [
@@ -102,14 +45,9 @@ const Campaign = () => {
             key: 'campaignName',
         },
         {
-            title: 'Brand Name',
+            title: 'Brand Owner',
             dataIndex: 'brandName',
             key: 'brandName',
-        },
-        {
-            title: 'Influencers',
-            dataIndex: 'influencers',
-            key: 'influencers',
         },
         {
             title: 'Campaign Status',
@@ -121,16 +59,16 @@ const Campaign = () => {
             key: 'dateRange',
             render: (_text: any, record: any) => (
                 <span>
-                    {record.startDate}/{record.endDate}
+                    {record.startDate} / {record.endDate}
                 </span>
             ),
         },
         {
             title: 'Actions',
             key: 'action',
-            render: () => (
+            render: (_:any, record:any) => (
                 <div className="flex items-center gap-3">
-                    <button onClick={() => setCampaignModal(true)} className="text-primary">
+                    <button onClick={() => {setCampaignModal(true) , setCampaignData(record)}} className="text-primary">
                         <AiOutlineEye size={24} />
                     </button>
                     <button className="text-red-500">
@@ -139,7 +77,16 @@ const Campaign = () => {
                 </div>
             ),
         },
-    ];
+    ]; 
+     
+    const handleStatus =(value:any)=>{
+        setStatus(value);
+    } 
+
+const handleOnSearch = (e:any) =>{ 
+    const value = e.target.value
+    setSearch(value);
+}
     return (
         <div className="">
             <div className="flex justify-between items-center">
@@ -153,21 +100,28 @@ const Campaign = () => {
                             height: 42,
                         }}
                         placeholder="Search"
-                        prefix={<SearchOutlined />}
+                        prefix={<SearchOutlined />} 
+                        onChange={(e)=>handleOnSearch(e)}
                     />
 
                     {/* Dropdown Filter */}
-                    <Select defaultValue="All" className="w-40 h-[42px]">
-                        <Option value="All">All</Option>
-                        <Option value="Active">Active</Option>
-                        <Option value="Inactive">Inactive</Option>
+                    <Select defaultValue="All" className="w-40 h-[42px]" onChange={handleStatus}>
+                        <Option value="">All</Option>
+                        <Option value="Approved">Approved</Option>
                         <Option value="Pending">Pending</Option>
+                        <Option value="Rejected">Rejected</Option>
                     </Select>
                 </div>
             </div>
-            <Table columns={columns} dataSource={data} rowClassName="hover:bg-gray-100" />
+            <Table columns={columns} dataSource={data} rowClassName="hover:bg-gray-100" 
+           pagination={{
+            current: page,
+            total: campaignsData?.meta?.total,
+            pageSize: 10,  // Adjust as needed
+            onChange: (page) => setPage(page),
+        }} />
             <CustomModal
-                body={<CampaignDetails />}
+                body={<CampaignDetails  campaignData={campaignData}/>}
                 open={campaignModal}
                 setOpen={setCampaignModal}
                 key={'campaign'}

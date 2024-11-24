@@ -1,12 +1,44 @@
 import { Button, Checkbox, ConfigProvider, Form, FormProps, Input } from 'antd';
 import { FieldNamesType } from 'antd/es/cascader';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLoginUserMutation } from '../../redux/features/authApi';
+import { useEffect } from 'react';
+import { setToLocalStorage } from '../../utils/LocalStorage';
+import Swal from 'sweetalert2';
 
 const Login = () => {
-    const navigate = useNavigate();
-    const onFinish: FormProps<FieldNamesType>['onFinish'] = (values) => {
-        console.log('Received values of form: ', values);
-        navigate('/');
+    const navigate = useNavigate(); 
+    const [loginUser , {isSuccess , isError , isLoading , data , error}] = useLoginUserMutation() 
+
+    useEffect(() => {
+        if (isSuccess) { 
+          if (data) {
+            Swal.fire({
+              text: data?.message ,
+              icon: "success",
+              timer: 1500,
+              showConfirmButton: false
+            }).then(() => {
+              setToLocalStorage("AccessToken", data?.data?.accessToken);  
+              setToLocalStorage("refreshToken", data?.data?.refreshToken);  
+              navigate("/");   
+              window.location.reload(); 
+            });
+          }
+        }
+        if (isError) {
+          Swal.fire({ 
+            //@ts-ignore
+            text: error?.data?.message,  
+            icon: "error",
+          });
+        }
+      }, [isSuccess, isError, error, data, navigate])  
+
+
+    const onFinish: FormProps<FieldNamesType>['onFinish'] = async (values) => { 
+        await loginUser(values)
+        // navigate('/'); 
     };
 
     return (
@@ -86,9 +118,9 @@ const Login = () => {
                                     width: '100%',
                                     fontWeight: 500,
                                 }}
-                                // onClick={() => navigate('/')}
+                                
                             >
-                                Sign In
+                             {isLoading ? "loading.." : "Sign In"}
                             </Button>
                         </Form.Item>
                     </Form>

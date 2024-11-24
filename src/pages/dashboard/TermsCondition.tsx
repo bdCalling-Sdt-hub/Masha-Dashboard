@@ -1,10 +1,18 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import { Button } from 'antd';
+import Swal from 'sweetalert2';
+import { useGetAppTermsQuery, useUpdateAppTermsMutation } from '../../redux/features/termsApi';
 
 const TermsCondition = () => {
     const editor = useRef(null);
     const [content, setContent] = useState('');
+    const {data:terms , refetch} = useGetAppTermsQuery(undefined) 
+    const [updateAppTerms] =useUpdateAppTermsMutation()
+
+useEffect(()=>{
+  setContent(terms?.data?.details)
+} ,[terms?.data?.details]) 
 
     const config = {
         readonly: false,
@@ -13,7 +21,34 @@ const TermsCondition = () => {
             height: 400,
             background: 'white',
         },
-    };
+    }; 
+
+
+    const handleSubmit =async()=>{
+        await updateAppTerms({details:content}).then((res)=>{
+          if(res?.data?.success){
+            Swal.fire({
+                text:res?.data?.message,
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                refetch(); 
+                
+              })
+        }else{
+            Swal.fire({
+                title: "Oops", 
+                //@ts-ignore
+                text: res?.error?.data?.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false,
+              });
+          
+        }
+        })
+      }
     return (
         <div className=" bg-white px-4 py-2 rounded-lg pb-10 ">
             <div
@@ -50,7 +85,8 @@ const TermsCondition = () => {
                         height: 40,
                         width: '150px',
                     }}
-                    type="primary"
+                    type="primary" 
+                    onClick={handleSubmit}
                 >
                     Save Changes
                 </Button>

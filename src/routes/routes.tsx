@@ -16,6 +16,10 @@ import ForgetPassword from '../pages/authentication/ForgetPassword';
 import VerifyOtp from '../pages/authentication/VerifyOtp';
 import NewPassword from '../pages/authentication/NewPassword';
 import Profile from '../pages/dashboard/profile/Profile';
+import InfluenceTerms from '../pages/dashboard/InfluenceTerms';
+import BrandTerms from '../pages/dashboard/BrandTerms';
+import DiscountClub from '../pages/dashboard/DiscountClub';
+
 
 const router = createBrowserRouter([
     {
@@ -29,8 +33,11 @@ const router = createBrowserRouter([
             { path: 'categories', element: <Categories /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },
+            { path: 'discount-club', element: <DiscountClub /> },
             { path: 'make-admin', element: <MakeAdmin /> },
             { path: 'terms', element: <TermsCondition /> },
+            { path: 'influencer-terms', element: <InfluenceTerms /> },
+            { path: 'brand-terms', element: <BrandTerms /> },
             { path: 'faqs', element: <FAQs /> },
             { path: 'notification', element: <Notification /> },
             { path: 'profile', element: <Profile /> },

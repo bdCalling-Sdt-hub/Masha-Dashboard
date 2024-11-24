@@ -1,9 +1,35 @@
 import { Layout } from 'antd';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { io } from 'socket.io-client';
+import { useGetProfileQuery } from '../../redux/features/authApi';
+import { imageUrl } from '../../redux/baseApi';
 
 const { Header } = Layout;
 
-const HeaderDashboard = () => {
+const HeaderDashboard = () => { 
+    const [notificationCount, setNotificationCount] = useState(0); 
+    const {data:profile} = useGetProfileQuery(undefined)  
+
+
+    useEffect(() => {
+  
+      const socket = io('http://192.168.10.18:5000', {
+        query: { token: localStorage.getItem("AccessToken") }, 
+      });
+  
+  
+      socket.on('getNotification::671644cc82e3c60d1cf74311', (notification) => {
+       
+        setNotificationCount((prevCount) => prevCount + 1);
+      });
+  
+     
+      return () => {
+        socket.disconnect();
+      };
+    }, []);  
+
     return (
         <Header
             style={{
@@ -22,7 +48,7 @@ const HeaderDashboard = () => {
                             <button className="py-4 px-1 relative border-2 border-transparent text-gray-800 rounded-full hover:text-gray-400 focus:outline-none focus:text-gray-500 transition duration-150 ease-in-out">
                                 <span className="absolute inset-0 -top-4  -mr-6">
                                     <div className="inline-flex items-center px-1.5 py-0.5 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-primary text-white">
-                                        6
+                                        {notificationCount}
                                     </div>
                                 </span>
                                 <svg
@@ -65,13 +91,14 @@ const HeaderDashboard = () => {
                         }}
                     >
                         <img
-                            src={'/user.svg'}
+                            src={profile?.data?.image?.startsWith("https") ? profile?.data?.image : `${imageUrl}${profile?.data?.image}`}
                             style={{
                                 width: '44px',
                                 height: '44px',
                                 borderRadius: '50%',
                                 borderColor: '#DBB162',
-                                borderWidth: 2,
+                                borderWidth: 2, 
+                                objectFit:"cover"
                             }}
                             alt=""
                         />
@@ -82,7 +109,7 @@ const HeaderDashboard = () => {
                                 fontWeight: '600',
                             }}
                         >
-                            Anonymous
+                           {profile?.data?.fullName}
                         </h2>
                     </Link>
                 </div>

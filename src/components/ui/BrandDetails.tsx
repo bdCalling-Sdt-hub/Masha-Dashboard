@@ -1,12 +1,84 @@
-import { Button, Divider, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import Brand from '/brand.svg';
-const BrandDetails = () => {
+import { Button, Divider } from 'antd';
+
+import { imageUrl } from '../../redux/baseApi';
+import { Link } from 'react-router-dom';
+import { useUpdateInfluencerStatusMutation } from '../../redux/features/influencerApi';
+import Swal from 'sweetalert2';
+const BrandDetails = ({modalData , refetch ,setShowBrand}:any) => { 
+    const [updateInfluencerStatus] = useUpdateInfluencerStatusMutation()
+    
+    // reject 
+    const handleReject = async(id:string|number)=>{  
+        const data ={ 
+            id:id ,
+            loginStatus : "Rejected"
+        } 
+
+      await updateInfluencerStatus(data).then((res)=>{ 
+   
+        if(res?.data?.success){
+            Swal.fire({
+                text:res?.data?.message,
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(()=>{
+                setShowBrand(false)
+                refetch() 
+
+              })
+        }else{
+            Swal.fire({
+                title: "Oops", 
+                //@ts-ignore
+                text: res?.error?.data?.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false,
+              });
+          
+        }
+      })
+    } 
+
+     // approved   
+     const handleApprove = async(id:string|number)=>{
+        const data ={ 
+            id:id ,
+            loginStatus : "Approved"
+        } 
+
+      await updateInfluencerStatus(data).then((res)=>{
+        if(res?.data?.success){
+            Swal.fire({
+                text:res?.data?.message,
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(()=>{
+                setShowBrand(false)
+                refetch() 
+
+              })
+        }else{
+            Swal.fire({
+                title: "Oops", 
+                //@ts-ignore
+                text: res?.error?.data?.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false,
+              });
+          
+        }
+      })
+     } 
+
     return (
         <div className=" p-6 rounded-lg  mx-auto">
             {/* Header with Logo */}
             <div className="flex justify-center mb-4">
-                <img src={Brand} alt="Lay's Logo" className="size-[156px]" />
+                <img src={modalData?.image?.startsWith("https") ? modalData?.image  : `${imageUrl}${modalData?.image}`  } alt="Lay's Logo" className="size-[156px] rounded-full" />
                 {/* Adjust the logo path accordingly */}
             </div>
 
@@ -17,7 +89,7 @@ const BrandDetails = () => {
                     <h3 className="text-2xl text-center font-semibold text-gray-800 mb-4">Brand's Details</h3>
                     <p className="flex justify-between">
                         <span className="font-medium">Company Name:</span>
-                        <span>Lionel Messi</span>
+                        <span>{modalData?.name}</span>
                     </p>
                     <p className="flex justify-between">
                         <span className="font-medium">Category:</span>
@@ -25,31 +97,24 @@ const BrandDetails = () => {
                     </p>
                     <p className="flex justify-between">
                         <span className="font-medium">Email:</span>
-                        <span>irnabela@gmail.com</span>
+                        <span>{modalData?.email}</span>
                     </p>
                     <p className="flex justify-between">
                         <span className="font-medium">What's App Number:</span>
-                        <span>(+33)7 00 55 59 27</span>
+                        <span>{modalData?.whatsapp}</span>
                     </p>
                     <p className="flex justify-between">
                         <span className="font-medium">Phone Number:</span>
-                        <span>(+33)7 00 55 59 27</span>
+                        <span>{modalData?.contact}</span>
                     </p>
                     <p className="flex justify-between">
                         <span className="font-medium">Owner Name:</span>
-                        <span>Shanto Hasan</span>
+                        <span>{modalData?.ownerName}</span>
                     </p>
-                    <p className="flex justify-between">
-                        <span className="font-medium">Contact Number:</span>
-                        <span>(+33)7 00 55 59 27</span>
-                    </p>
-                    <p className="flex justify-between">
-                        <span className="font-medium">Manager's Details:</span>
-                        <span>Here...</span>
-                    </p>
+                  
                     <p className="flex justify-between">
                         <span className="font-medium">Location:</span>
-                        <span>Apt. 738 2086 Marianne Parks</span>
+                        <span>{modalData?.address}</span>
                     </p>
                 </div>
 
@@ -59,31 +124,14 @@ const BrandDetails = () => {
                 {/* Social Media and Other Details Section */}
                 <div className="w-[49%]">
                     <h3 className="text-2xl font-semibold text-gray-800 mb-4">Social Media Link</h3>
-                    <p className="flex justify-between">
-                        <span className="font-medium">Facebook:</span>
-                        <span>www.facebook.com/shanto594</span>
-                    </p>
-                    <p className="flex justify-between">
-                        <span className="font-medium">Instagram:</span>
-                        <span>www.instagram.com/shanto594</span>
-                    </p>
-
-                    <Divider type="vertical" className="my-4" />
-
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">ID Proof</h3>
-                    <Upload>
-                        <Button icon={<UploadOutlined />}>ID Proof</Button>
-                    </Upload>
-
-                    <h3 className="text-lg font-semibold text-center text-gray-800 mt-6">Campaign Information</h3>
-                    <p className="flex justify-between">
-                        <span className="font-medium">Active:</span>
-                        <span className="text-green-500">4</span>
-                    </p>
-                    <p className="flex justify-between">
-                        <span className="font-medium">Completed:</span>
-                        <span className="text-blue-500">15</span>
-                    </p>
+                    <div className="flex justify-between">
+                        <p className="font-medium">TikTok:</p>
+                        <Link to={modalData?.tiktokLink}>{modalData?.tiktokLink}</Link>
+                    </div>
+                    <div className="flex justify-between">
+                        <p className="font-medium">Instagram:</p>
+                        <Link to={modalData?.instagramLink}>{modalData?.instagramLink}</Link>
+                    </div>
                 </div>
             </div>
 
@@ -92,10 +140,10 @@ const BrandDetails = () => {
 
             {/* Buttons */}
             <div className="flex justify-center space-x-4">
-                <Button danger className="w-32">
+                <Button danger className="w-32" onClick={()=>handleReject(modalData?.id)} disabled={modalData?.status === "Rejected"}>
                     Reject
                 </Button>
-                <Button type="primary" className="w-32">
+                <Button type="primary" className="w-32" onClick={()=>handleApprove(modalData?.id)} disabled={modalData?.status === "Approved"}>
                     Approve
                 </Button>
             </div>

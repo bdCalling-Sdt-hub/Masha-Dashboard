@@ -1,26 +1,26 @@
 import { Select } from 'antd';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Legend, Bar } from 'recharts';
-const { Option } = Select;
-const UserChart = () => {
-    interface UserData {
-        month: string;
-        totalUsers: number;
-        newUsers: number; // Example for the secondary bar
-    }
+import { useUserStatisticsChartQuery } from '../../../redux/features/homeApi';
+import { useState } from 'react';
+const { Option } = Select;  
 
-    const data: UserData[] = [
-        { month: 'February', totalUsers: 120, newUsers: 30 },
-        { month: 'March', totalUsers: 200, newUsers: 45 },
-        { month: 'April', totalUsers: 150, newUsers: 40 },
-        { month: 'May', totalUsers: 220, newUsers: 50 },
-        { month: 'June', totalUsers: 180, newUsers: 35 },
-        { month: 'July', totalUsers: 300, newUsers: 70 },
-        { month: 'August', totalUsers: 250, newUsers: 60 },
-        { month: 'September', totalUsers: 270, newUsers: 80 },
-        { month: 'October', totalUsers: 320, newUsers: 90 },
-        { month: 'November', totalUsers: 280, newUsers: 75 },
-        { month: 'December', totalUsers: 350, newUsers: 100 },
-    ];
+interface UserData {
+    month: string;
+    totalUsers: number
+} 
+
+const UserChart = () => {    
+    const [year , setYear] = useState<number|string|null>()
+    const {data:usersStatistics} = useUserStatisticsChartQuery(year)
+    const data: UserData[] = usersStatistics?.data?.map((value:any , index:number)=>({ 
+        key:index ,
+        month: value?.month, 
+         totalUsers: value?.totalRegistrations, 
+    })) 
+
+  const handleYear = (value:number|string)=>{
+    setYear(value);
+  }
 
     return (
         <div
@@ -32,7 +32,7 @@ const UserChart = () => {
         >
             <div className="px-2 flex items-center justify-between">
                 <h1 className="text-2xl font-medium">Total Users Statistics</h1>
-                <Select defaultValue="2024" className="w-32 h-[40px]">
+                <Select defaultValue="2024" className="w-32 h-[40px]" onChange={handleYear}>
                     <Option value="2024">2024</Option>
                     <Option value="2025">2025</Option>
                     <Option value="2026">2026</Option>
@@ -50,7 +50,7 @@ const UserChart = () => {
                     <Tooltip />
                     <Legend />
                     <Bar dataKey="totalUsers" fill="#DAA520" />
-                    <Bar dataKey="newUsers" fill="#5C450D" />
+                  
                 </BarChart>
             </ResponsiveContainer>
         </div>

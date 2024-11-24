@@ -1,8 +1,10 @@
 import MainLayout from './components/layout/MainLayout';
 import { ConfigProvider } from 'antd';
+import PrivateRoute from './routes/PrivateRoute';
 function App() {
     return (
         <>
+        <PrivateRoute >
             <ConfigProvider
                 theme={{
                     token: {
@@ -16,7 +18,8 @@ function App() {
                 }}
             >
                 <MainLayout />
-            </ConfigProvider>
+            </ConfigProvider> 
+            </PrivateRoute>
         </>
     );
 }
